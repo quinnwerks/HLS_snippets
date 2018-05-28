@@ -21,8 +21,6 @@ port (
     packetIn_TREADY : OUT STD_LOGIC;
     packetIn_TLAST : IN STD_LOGIC_VECTOR (0 downto 0);
     packetIn_TKEEP : IN STD_LOGIC_VECTOR (7 downto 0);
-    eth_dst_V : IN STD_LOGIC_VECTOR (47 downto 0);
-    eth_src_V : IN STD_LOGIC_VECTOR (47 downto 0);
     packetOut_TDATA : OUT STD_LOGIC_VECTOR (63 downto 0);
     packetOut_TVALID : OUT STD_LOGIC;
     packetOut_TREADY : IN STD_LOGIC;
@@ -52,7 +50,7 @@ end;
 architecture behav of testpr is 
     attribute CORE_GENERATION_INFO : STRING;
     attribute CORE_GENERATION_INFO of behav : architecture is
-    "testpr,hls_ip_2018_1,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=1,HLS_INPUT_PART=xa7a12tcsg325-1q,HLS_INPUT_CLOCK=10.000000,HLS_INPUT_ARCH=others,HLS_SYN_CLOCK=3.560000,HLS_SYN_LAT=-1,HLS_SYN_TPT=none,HLS_SYN_MEM=0,HLS_SYN_DSP=0,HLS_SYN_FF=326,HLS_SYN_LUT=492}";
+    "testpr,hls_ip_2018_1,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=0,HLS_INPUT_PART=xa7a12tcsg325-1q,HLS_INPUT_CLOCK=10.000000,HLS_INPUT_ARCH=others,HLS_SYN_CLOCK=3.560000,HLS_SYN_LAT=-1,HLS_SYN_TPT=none,HLS_SYN_MEM=0,HLS_SYN_DSP=0,HLS_SYN_FF=326,HLS_SYN_LUT=492}";
     constant ap_const_logic_1 : STD_LOGIC := '1';
     constant ap_const_logic_0 : STD_LOGIC := '0';
     constant ap_ST_fsm_state1 : STD_LOGIC_VECTOR (5 downto 0) := "000001";
@@ -166,12 +164,12 @@ architecture behav of testpr is
     attribute fsm_encoding of ap_CS_fsm_state3 : signal is "none";
     signal ap_CS_fsm_state6 : STD_LOGIC;
     attribute fsm_encoding of ap_CS_fsm_state6 : signal is "none";
-    signal tmp_last_V_reg_104 : STD_LOGIC_VECTOR (0 downto 0);
-    signal currPacketOut_data_V_fu_86_p2 : STD_LOGIC_VECTOR (63 downto 0);
-    signal tmp_last_V_3_reg_115 : STD_LOGIC_VECTOR (0 downto 0);
-    signal currPacketOut_data_V_1_fu_97_p2 : STD_LOGIC_VECTOR (63 downto 0);
-    signal ap_phi_mux_p_s_phi_fu_71_p4 : STD_LOGIC_VECTOR (0 downto 0);
-    signal p_s_reg_68 : STD_LOGIC_VECTOR (0 downto 0);
+    signal tmp_last_V_reg_100 : STD_LOGIC_VECTOR (0 downto 0);
+    signal currPacketOut_data_V_fu_82_p2 : STD_LOGIC_VECTOR (63 downto 0);
+    signal tmp_last_V_3_reg_111 : STD_LOGIC_VECTOR (0 downto 0);
+    signal currPacketOut_data_V_1_fu_93_p2 : STD_LOGIC_VECTOR (63 downto 0);
+    signal ap_phi_mux_p_s_phi_fu_67_p4 : STD_LOGIC_VECTOR (0 downto 0);
+    signal p_s_reg_64 : STD_LOGIC_VECTOR (0 downto 0);
     signal ap_CS_fsm_state4 : STD_LOGIC;
     attribute fsm_encoding of ap_CS_fsm_state4 : signal is "none";
     signal ap_block_state4 : BOOLEAN;
@@ -505,14 +503,14 @@ begin
     end process;
 
 
-    p_s_reg_68_assign_proc : process (ap_clk)
+    p_s_reg_64_assign_proc : process (ap_clk)
     begin
         if (ap_clk'event and ap_clk = '1') then
             if ((packetOut_V_data_V_1_ack_in = ap_const_logic_1)) then
                 if ((ap_const_logic_1 = ap_CS_fsm_state6)) then 
-                    p_s_reg_68 <= tmp_last_V_3_reg_115;
+                    p_s_reg_64 <= tmp_last_V_3_reg_111;
                 elsif ((ap_const_logic_1 = ap_CS_fsm_state3)) then 
-                    p_s_reg_68 <= tmp_last_V_reg_104;
+                    p_s_reg_64 <= tmp_last_V_reg_100;
                 end if;
             end if; 
         end if;
@@ -585,7 +583,7 @@ begin
     begin
         if (ap_clk'event and ap_clk = '1') then
             if ((not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state5))) then
-                tmp_last_V_3_reg_115 <= packetIn_V_last_V_0_data_out;
+                tmp_last_V_3_reg_111 <= packetIn_V_last_V_0_data_out;
             end if;
         end if;
     end process;
@@ -593,12 +591,12 @@ begin
     begin
         if (ap_clk'event and ap_clk = '1') then
             if ((not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state2))) then
-                tmp_last_V_reg_104 <= packetIn_V_last_V_0_data_out;
+                tmp_last_V_reg_100 <= packetIn_V_last_V_0_data_out;
             end if;
         end if;
     end process;
 
-    ap_NS_fsm_assign_proc : process (ap_start, ap_CS_fsm, ap_CS_fsm_state1, packetIn_V_data_V_0_vld_out, packetOut_V_data_V_1_ack_in, packetOut_V_last_V_1_ack_in, packetOut_V_keep_V_1_ack_in, ap_CS_fsm_state2, ap_CS_fsm_state5, ap_CS_fsm_state3, ap_CS_fsm_state6, ap_phi_mux_p_s_phi_fu_71_p4, ap_CS_fsm_state4)
+    ap_NS_fsm_assign_proc : process (ap_start, ap_CS_fsm, ap_CS_fsm_state1, packetIn_V_data_V_0_vld_out, packetOut_V_data_V_1_ack_in, packetOut_V_last_V_1_ack_in, packetOut_V_keep_V_1_ack_in, ap_CS_fsm_state2, ap_CS_fsm_state5, ap_CS_fsm_state3, ap_CS_fsm_state6, ap_phi_mux_p_s_phi_fu_67_p4, ap_CS_fsm_state4)
     begin
         case ap_CS_fsm is
             when ap_ST_fsm_state1 => 
@@ -620,9 +618,9 @@ begin
                     ap_NS_fsm <= ap_ST_fsm_state3;
                 end if;
             when ap_ST_fsm_state4 => 
-                if ((not(((packetOut_V_keep_V_1_ack_in = ap_const_logic_0) or (packetOut_V_last_V_1_ack_in = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_phi_mux_p_s_phi_fu_71_p4 = ap_const_lv1_1) and (ap_const_logic_1 = ap_CS_fsm_state4))) then
+                if ((not(((packetOut_V_keep_V_1_ack_in = ap_const_logic_0) or (packetOut_V_last_V_1_ack_in = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_phi_mux_p_s_phi_fu_67_p4 = ap_const_lv1_1) and (ap_const_logic_1 = ap_CS_fsm_state4))) then
                     ap_NS_fsm <= ap_ST_fsm_state1;
-                elsif ((not(((packetOut_V_keep_V_1_ack_in = ap_const_logic_0) or (packetOut_V_last_V_1_ack_in = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_phi_mux_p_s_phi_fu_71_p4 = ap_const_lv1_0) and (ap_const_logic_1 = ap_CS_fsm_state4))) then
+                elsif ((not(((packetOut_V_keep_V_1_ack_in = ap_const_logic_0) or (packetOut_V_last_V_1_ack_in = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_phi_mux_p_s_phi_fu_67_p4 = ap_const_lv1_0) and (ap_const_logic_1 = ap_CS_fsm_state4))) then
                     ap_NS_fsm <= ap_ST_fsm_state5;
                 else
                     ap_NS_fsm <= ap_ST_fsm_state4;
@@ -656,9 +654,9 @@ begin
     end process;
 
 
-    ap_done_assign_proc : process(packetOut_V_data_V_1_ack_in, packetOut_V_last_V_1_ack_in, packetOut_V_keep_V_1_ack_in, ap_phi_mux_p_s_phi_fu_71_p4, ap_CS_fsm_state4)
+    ap_done_assign_proc : process(packetOut_V_data_V_1_ack_in, packetOut_V_last_V_1_ack_in, packetOut_V_keep_V_1_ack_in, ap_phi_mux_p_s_phi_fu_67_p4, ap_CS_fsm_state4)
     begin
-        if ((not(((packetOut_V_keep_V_1_ack_in = ap_const_logic_0) or (packetOut_V_last_V_1_ack_in = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_phi_mux_p_s_phi_fu_71_p4 = ap_const_lv1_1) and (ap_const_logic_1 = ap_CS_fsm_state4))) then 
+        if ((not(((packetOut_V_keep_V_1_ack_in = ap_const_logic_0) or (packetOut_V_last_V_1_ack_in = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_phi_mux_p_s_phi_fu_67_p4 = ap_const_lv1_1) and (ap_const_logic_1 = ap_CS_fsm_state4))) then 
             ap_done <= ap_const_logic_1;
         else 
             ap_done <= ap_const_logic_0;
@@ -675,11 +673,11 @@ begin
         end if; 
     end process;
 
-    ap_phi_mux_p_s_phi_fu_71_p4 <= p_s_reg_68;
+    ap_phi_mux_p_s_phi_fu_67_p4 <= p_s_reg_64;
 
-    ap_ready_assign_proc : process(packetOut_V_data_V_1_ack_in, packetOut_V_last_V_1_ack_in, packetOut_V_keep_V_1_ack_in, ap_phi_mux_p_s_phi_fu_71_p4, ap_CS_fsm_state4)
+    ap_ready_assign_proc : process(packetOut_V_data_V_1_ack_in, packetOut_V_last_V_1_ack_in, packetOut_V_keep_V_1_ack_in, ap_phi_mux_p_s_phi_fu_67_p4, ap_CS_fsm_state4)
     begin
-        if ((not(((packetOut_V_keep_V_1_ack_in = ap_const_logic_0) or (packetOut_V_last_V_1_ack_in = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_phi_mux_p_s_phi_fu_71_p4 = ap_const_lv1_1) and (ap_const_logic_1 = ap_CS_fsm_state4))) then 
+        if ((not(((packetOut_V_keep_V_1_ack_in = ap_const_logic_0) or (packetOut_V_last_V_1_ack_in = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_phi_mux_p_s_phi_fu_67_p4 = ap_const_lv1_1) and (ap_const_logic_1 = ap_CS_fsm_state4))) then 
             ap_ready <= ap_const_logic_1;
         else 
             ap_ready <= ap_const_logic_0;
@@ -692,8 +690,8 @@ begin
                 ap_rst_n_inv <= not(ap_rst_n);
     end process;
 
-    currPacketOut_data_V_1_fu_97_p2 <= std_logic_vector(unsigned(packetIn_V_data_V_0_data_out) + unsigned(ap_const_lv64_45));
-    currPacketOut_data_V_fu_86_p2 <= std_logic_vector(unsigned(packetIn_V_data_V_0_data_out) + unsigned(ap_const_lv64_45));
+    currPacketOut_data_V_1_fu_93_p2 <= std_logic_vector(unsigned(packetIn_V_data_V_0_data_out) + unsigned(ap_const_lv64_45));
+    currPacketOut_data_V_fu_82_p2 <= std_logic_vector(unsigned(packetIn_V_data_V_0_data_out) + unsigned(ap_const_lv64_45));
 
     packetIn_TDATA_blk_n_assign_proc : process(packetIn_V_data_V_0_state, ap_CS_fsm_state2, ap_CS_fsm_state5)
     begin
@@ -787,13 +785,13 @@ begin
     packetOut_V_data_V_1_ack_in <= packetOut_V_data_V_1_state(1);
     packetOut_V_data_V_1_ack_out <= packetOut_TREADY;
 
-    packetOut_V_data_V_1_data_in_assign_proc : process(packetIn_V_data_V_0_vld_out, ap_CS_fsm_state2, ap_CS_fsm_state5, currPacketOut_data_V_fu_86_p2, currPacketOut_data_V_1_fu_97_p2)
+    packetOut_V_data_V_1_data_in_assign_proc : process(packetIn_V_data_V_0_vld_out, ap_CS_fsm_state2, ap_CS_fsm_state5, currPacketOut_data_V_fu_82_p2, currPacketOut_data_V_1_fu_93_p2)
     begin
         if ((packetIn_V_data_V_0_vld_out = ap_const_logic_1)) then
             if ((ap_const_logic_1 = ap_CS_fsm_state5)) then 
-                packetOut_V_data_V_1_data_in <= currPacketOut_data_V_1_fu_97_p2;
+                packetOut_V_data_V_1_data_in <= currPacketOut_data_V_1_fu_93_p2;
             elsif ((ap_const_logic_1 = ap_CS_fsm_state2)) then 
-                packetOut_V_data_V_1_data_in <= currPacketOut_data_V_fu_86_p2;
+                packetOut_V_data_V_1_data_in <= currPacketOut_data_V_fu_82_p2;
             else 
                 packetOut_V_data_V_1_data_in <= "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
             end if;

@@ -7,7 +7,7 @@
 
 `timescale 1 ns / 1 ps 
 
-(* CORE_GENERATION_INFO="testpr,hls_ip_2018_1,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=1,HLS_INPUT_PART=xa7a12tcsg325-1q,HLS_INPUT_CLOCK=10.000000,HLS_INPUT_ARCH=others,HLS_SYN_CLOCK=3.560000,HLS_SYN_LAT=-1,HLS_SYN_TPT=none,HLS_SYN_MEM=0,HLS_SYN_DSP=0,HLS_SYN_FF=326,HLS_SYN_LUT=492}" *)
+(* CORE_GENERATION_INFO="testpr,hls_ip_2018_1,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=0,HLS_INPUT_PART=xa7a12tcsg325-1q,HLS_INPUT_CLOCK=10.000000,HLS_INPUT_ARCH=others,HLS_SYN_CLOCK=3.560000,HLS_SYN_LAT=-1,HLS_SYN_TPT=none,HLS_SYN_MEM=0,HLS_SYN_DSP=0,HLS_SYN_FF=326,HLS_SYN_LUT=492}" *)
 
 module testpr (
         ap_clk,
@@ -17,8 +17,6 @@ module testpr (
         packetIn_TREADY,
         packetIn_TLAST,
         packetIn_TKEEP,
-        eth_dst_V,
-        eth_src_V,
         packetOut_TDATA,
         packetOut_TVALID,
         packetOut_TREADY,
@@ -64,8 +62,6 @@ input   packetIn_TVALID;
 output   packetIn_TREADY;
 input  [0:0] packetIn_TLAST;
 input  [7:0] packetIn_TKEEP;
-input  [47:0] eth_dst_V;
-input  [47:0] eth_src_V;
 output  [63:0] packetOut_TDATA;
 output   packetOut_TVALID;
 input   packetOut_TREADY;
@@ -171,12 +167,12 @@ wire    ap_CS_fsm_state5;
 reg    packetOut_TDATA_blk_n;
 wire    ap_CS_fsm_state3;
 wire    ap_CS_fsm_state6;
-reg   [0:0] tmp_last_V_reg_104;
-wire   [63:0] currPacketOut_data_V_fu_86_p2;
-reg   [0:0] tmp_last_V_3_reg_115;
-wire   [63:0] currPacketOut_data_V_1_fu_97_p2;
-wire   [0:0] ap_phi_mux_p_s_phi_fu_71_p4;
-reg   [0:0] p_s_reg_68;
+reg   [0:0] tmp_last_V_reg_100;
+wire   [63:0] currPacketOut_data_V_fu_82_p2;
+reg   [0:0] tmp_last_V_3_reg_111;
+wire   [63:0] currPacketOut_data_V_1_fu_93_p2;
+wire   [0:0] ap_phi_mux_p_s_phi_fu_67_p4;
+reg   [0:0] p_s_reg_64;
 wire    ap_CS_fsm_state4;
 reg    ap_block_state4;
 reg   [5:0] ap_NS_fsm;
@@ -429,9 +425,9 @@ end
 always @ (posedge ap_clk) begin
     if ((packetOut_V_data_V_1_ack_in == 1'b1)) begin
         if ((1'b1 == ap_CS_fsm_state6)) begin
-            p_s_reg_68 <= tmp_last_V_3_reg_115;
+            p_s_reg_64 <= tmp_last_V_3_reg_111;
         end else if ((1'b1 == ap_CS_fsm_state3)) begin
-            p_s_reg_68 <= tmp_last_V_reg_104;
+            p_s_reg_64 <= tmp_last_V_reg_100;
         end
     end
 end
@@ -486,18 +482,18 @@ end
 
 always @ (posedge ap_clk) begin
     if ((~((packetIn_V_data_V_0_vld_out == 1'b0) | (packetOut_V_data_V_1_ack_in == 1'b0)) & (1'b1 == ap_CS_fsm_state5))) begin
-        tmp_last_V_3_reg_115 <= packetIn_V_last_V_0_data_out;
+        tmp_last_V_3_reg_111 <= packetIn_V_last_V_0_data_out;
     end
 end
 
 always @ (posedge ap_clk) begin
     if ((~((packetIn_V_data_V_0_vld_out == 1'b0) | (packetOut_V_data_V_1_ack_in == 1'b0)) & (1'b1 == ap_CS_fsm_state2))) begin
-        tmp_last_V_reg_104 <= packetIn_V_last_V_0_data_out;
+        tmp_last_V_reg_100 <= packetIn_V_last_V_0_data_out;
     end
 end
 
 always @ (*) begin
-    if ((~((packetOut_V_keep_V_1_ack_in == 1'b0) | (packetOut_V_last_V_1_ack_in == 1'b0) | (packetOut_V_data_V_1_ack_in == 1'b0)) & (ap_phi_mux_p_s_phi_fu_71_p4 == 1'd1) & (1'b1 == ap_CS_fsm_state4))) begin
+    if ((~((packetOut_V_keep_V_1_ack_in == 1'b0) | (packetOut_V_last_V_1_ack_in == 1'b0) | (packetOut_V_data_V_1_ack_in == 1'b0)) & (ap_phi_mux_p_s_phi_fu_67_p4 == 1'd1) & (1'b1 == ap_CS_fsm_state4))) begin
         ap_done = 1'b1;
     end else begin
         ap_done = 1'b0;
@@ -513,7 +509,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((~((packetOut_V_keep_V_1_ack_in == 1'b0) | (packetOut_V_last_V_1_ack_in == 1'b0) | (packetOut_V_data_V_1_ack_in == 1'b0)) & (ap_phi_mux_p_s_phi_fu_71_p4 == 1'd1) & (1'b1 == ap_CS_fsm_state4))) begin
+    if ((~((packetOut_V_keep_V_1_ack_in == 1'b0) | (packetOut_V_last_V_1_ack_in == 1'b0) | (packetOut_V_data_V_1_ack_in == 1'b0)) & (ap_phi_mux_p_s_phi_fu_67_p4 == 1'd1) & (1'b1 == ap_CS_fsm_state4))) begin
         ap_ready = 1'b1;
     end else begin
         ap_ready = 1'b0;
@@ -579,9 +575,9 @@ end
 always @ (*) begin
     if ((packetIn_V_data_V_0_vld_out == 1'b1)) begin
         if ((1'b1 == ap_CS_fsm_state5)) begin
-            packetOut_V_data_V_1_data_in = currPacketOut_data_V_1_fu_97_p2;
+            packetOut_V_data_V_1_data_in = currPacketOut_data_V_1_fu_93_p2;
         end else if ((1'b1 == ap_CS_fsm_state2)) begin
-            packetOut_V_data_V_1_data_in = currPacketOut_data_V_fu_86_p2;
+            packetOut_V_data_V_1_data_in = currPacketOut_data_V_fu_82_p2;
         end else begin
             packetOut_V_data_V_1_data_in = 'bx;
         end
@@ -654,9 +650,9 @@ always @ (*) begin
             end
         end
         ap_ST_fsm_state4 : begin
-            if ((~((packetOut_V_keep_V_1_ack_in == 1'b0) | (packetOut_V_last_V_1_ack_in == 1'b0) | (packetOut_V_data_V_1_ack_in == 1'b0)) & (ap_phi_mux_p_s_phi_fu_71_p4 == 1'd1) & (1'b1 == ap_CS_fsm_state4))) begin
+            if ((~((packetOut_V_keep_V_1_ack_in == 1'b0) | (packetOut_V_last_V_1_ack_in == 1'b0) | (packetOut_V_data_V_1_ack_in == 1'b0)) & (ap_phi_mux_p_s_phi_fu_67_p4 == 1'd1) & (1'b1 == ap_CS_fsm_state4))) begin
                 ap_NS_fsm = ap_ST_fsm_state1;
-            end else if ((~((packetOut_V_keep_V_1_ack_in == 1'b0) | (packetOut_V_last_V_1_ack_in == 1'b0) | (packetOut_V_data_V_1_ack_in == 1'b0)) & (ap_phi_mux_p_s_phi_fu_71_p4 == 1'd0) & (1'b1 == ap_CS_fsm_state4))) begin
+            end else if ((~((packetOut_V_keep_V_1_ack_in == 1'b0) | (packetOut_V_last_V_1_ack_in == 1'b0) | (packetOut_V_data_V_1_ack_in == 1'b0)) & (ap_phi_mux_p_s_phi_fu_67_p4 == 1'd0) & (1'b1 == ap_CS_fsm_state4))) begin
                 ap_NS_fsm = ap_ST_fsm_state5;
             end else begin
                 ap_NS_fsm = ap_ST_fsm_state4;
@@ -698,15 +694,15 @@ always @ (*) begin
     ap_block_state4 = ((packetOut_V_keep_V_1_ack_in == 1'b0) | (packetOut_V_last_V_1_ack_in == 1'b0) | (packetOut_V_data_V_1_ack_in == 1'b0));
 end
 
-assign ap_phi_mux_p_s_phi_fu_71_p4 = p_s_reg_68;
+assign ap_phi_mux_p_s_phi_fu_67_p4 = p_s_reg_64;
 
 always @ (*) begin
     ap_rst_n_inv = ~ap_rst_n;
 end
 
-assign currPacketOut_data_V_1_fu_97_p2 = (packetIn_V_data_V_0_data_out + 64'd69);
+assign currPacketOut_data_V_1_fu_93_p2 = (packetIn_V_data_V_0_data_out + 64'd69);
 
-assign currPacketOut_data_V_fu_86_p2 = (packetIn_V_data_V_0_data_out + 64'd69);
+assign currPacketOut_data_V_fu_82_p2 = (packetIn_V_data_V_0_data_out + 64'd69);
 
 assign packetIn_TREADY = packetIn_V_keep_V_0_state[1'd1];
 

@@ -4,8 +4,6 @@
   <xd:arg xd:name="packetIn.data" xd:originalName="packetIn" xd:direction="in" xd:interfaceRef="packetIn" xd:busTypeRef="axis" xd:dataWidth="64"/>
   <xd:arg xd:name="packetIn.last" xd:originalName="packetIn" xd:direction="in" xd:interfaceRef="packetIn" xd:busTypeRef="axis" xd:dataWidth="1"/>
   <xd:arg xd:name="packetIn.keep" xd:originalName="packetIn" xd:direction="in" xd:interfaceRef="packetIn" xd:busTypeRef="axis" xd:dataWidth="8"/>
-  <xd:arg xd:name="eth_dst" xd:originalName="eth_dst" xd:direction="in" xd:interfaceRef="eth_dst_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="48"/>
-  <xd:arg xd:name="eth_src" xd:originalName="eth_src" xd:direction="in" xd:interfaceRef="eth_src_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="48"/>
   <xd:arg xd:name="packetOut.data" xd:originalName="packetOut" xd:direction="out" xd:interfaceRef="packetOut" xd:busTypeRef="axis" xd:dataWidth="64"/>
   <xd:arg xd:name="packetOut.last" xd:originalName="packetOut" xd:direction="out" xd:interfaceRef="packetOut" xd:busTypeRef="axis" xd:dataWidth="1"/>
   <xd:arg xd:name="packetOut.keep" xd:originalName="packetOut" xd:direction="out" xd:interfaceRef="packetOut" xd:busTypeRef="axis" xd:dataWidth="8"/>
