@@ -15,6 +15,7 @@ int main(void){
 		temp.data = i;
 		temp.keep = 0xab;
 		temp.last = (i==TEST_SIZE-1);
+		std::cout << "incoming data: " <<temp.data<< std::endl;
 		streamIn.write(temp);
 	}
 	testpr(
@@ -26,6 +27,8 @@ int main(void){
 	for (int i = 0; i < TEST_SIZE; i++){
 		ap_axis blah;
 		blah = streamOut.read();
+		std::cout << "data should be: " << i + 69 <<std::endl;
+		std::cout << "data is actually: " << blah.data << std::endl;
 		if(i + 69 != blah.data){
 			err = 1;
 		}
