@@ -6,8 +6,8 @@
 # ==============================================================
 
 
-Family       : aartix7
-Device       : xa7a12t
-Package      : csg325
-Speed Grade  : -1q
+Family       : kintexu
+Device       : xcku115
+Package      : -flva1517
+Speed Grade  : -2-e
 Clock Period : 10.000 ns

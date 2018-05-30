@@ -10,9 +10,6 @@ use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
 entity testpr is
-generic (
-    C_S_AXI_AXILITES_ADDR_WIDTH : INTEGER := 4;
-    C_S_AXI_AXILITES_DATA_WIDTH : INTEGER := 32 );
 port (
     ap_clk : IN STD_LOGIC;
     ap_rst_n : IN STD_LOGIC;
@@ -25,67 +22,39 @@ port (
     packetOut_TVALID : OUT STD_LOGIC;
     packetOut_TREADY : IN STD_LOGIC;
     packetOut_TLAST : OUT STD_LOGIC_VECTOR (0 downto 0);
-    packetOut_TKEEP : OUT STD_LOGIC_VECTOR (7 downto 0);
-    s_axi_AXILiteS_AWVALID : IN STD_LOGIC;
-    s_axi_AXILiteS_AWREADY : OUT STD_LOGIC;
-    s_axi_AXILiteS_AWADDR : IN STD_LOGIC_VECTOR (C_S_AXI_AXILITES_ADDR_WIDTH-1 downto 0);
-    s_axi_AXILiteS_WVALID : IN STD_LOGIC;
-    s_axi_AXILiteS_WREADY : OUT STD_LOGIC;
-    s_axi_AXILiteS_WDATA : IN STD_LOGIC_VECTOR (C_S_AXI_AXILITES_DATA_WIDTH-1 downto 0);
-    s_axi_AXILiteS_WSTRB : IN STD_LOGIC_VECTOR (C_S_AXI_AXILITES_DATA_WIDTH/8-1 downto 0);
-    s_axi_AXILiteS_ARVALID : IN STD_LOGIC;
-    s_axi_AXILiteS_ARREADY : OUT STD_LOGIC;
-    s_axi_AXILiteS_ARADDR : IN STD_LOGIC_VECTOR (C_S_AXI_AXILITES_ADDR_WIDTH-1 downto 0);
-    s_axi_AXILiteS_RVALID : OUT STD_LOGIC;
-    s_axi_AXILiteS_RREADY : IN STD_LOGIC;
-    s_axi_AXILiteS_RDATA : OUT STD_LOGIC_VECTOR (C_S_AXI_AXILITES_DATA_WIDTH-1 downto 0);
-    s_axi_AXILiteS_RRESP : OUT STD_LOGIC_VECTOR (1 downto 0);
-    s_axi_AXILiteS_BVALID : OUT STD_LOGIC;
-    s_axi_AXILiteS_BREADY : IN STD_LOGIC;
-    s_axi_AXILiteS_BRESP : OUT STD_LOGIC_VECTOR (1 downto 0);
-    interrupt : OUT STD_LOGIC );
+    packetOut_TKEEP : OUT STD_LOGIC_VECTOR (7 downto 0) );
 end;
 
 
 architecture behav of testpr is 
     attribute CORE_GENERATION_INFO : STRING;
     attribute CORE_GENERATION_INFO of behav : architecture is
-    "testpr,hls_ip_2018_1,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=0,HLS_INPUT_PART=xa7a12tcsg325-1q,HLS_INPUT_CLOCK=10.000000,HLS_INPUT_ARCH=others,HLS_SYN_CLOCK=3.560000,HLS_SYN_LAT=-1,HLS_SYN_TPT=none,HLS_SYN_MEM=0,HLS_SYN_DSP=0,HLS_SYN_FF=326,HLS_SYN_LUT=492}";
+    "testpr,hls_ip_2018_1,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=0,HLS_INPUT_PART=xcku115-flva1517-2-e,HLS_INPUT_CLOCK=10.000000,HLS_INPUT_ARCH=others,HLS_SYN_CLOCK=1.573000,HLS_SYN_LAT=-1,HLS_SYN_TPT=none,HLS_SYN_MEM=0,HLS_SYN_DSP=0,HLS_SYN_FF=291,HLS_SYN_LUT=399}";
     constant ap_const_logic_1 : STD_LOGIC := '1';
     constant ap_const_logic_0 : STD_LOGIC := '0';
-    constant ap_ST_fsm_state1 : STD_LOGIC_VECTOR (5 downto 0) := "000001";
-    constant ap_ST_fsm_state2 : STD_LOGIC_VECTOR (5 downto 0) := "000010";
-    constant ap_ST_fsm_state3 : STD_LOGIC_VECTOR (5 downto 0) := "000100";
-    constant ap_ST_fsm_state4 : STD_LOGIC_VECTOR (5 downto 0) := "001000";
-    constant ap_ST_fsm_state5 : STD_LOGIC_VECTOR (5 downto 0) := "010000";
-    constant ap_ST_fsm_state6 : STD_LOGIC_VECTOR (5 downto 0) := "100000";
-    constant ap_const_lv32_0 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000000";
+    constant ap_ST_fsm_state1 : STD_LOGIC_VECTOR (6 downto 0) := "0000001";
+    constant ap_ST_fsm_state2 : STD_LOGIC_VECTOR (6 downto 0) := "0000010";
+    constant ap_ST_fsm_state3 : STD_LOGIC_VECTOR (6 downto 0) := "0000100";
+    constant ap_ST_fsm_state4 : STD_LOGIC_VECTOR (6 downto 0) := "0001000";
+    constant ap_ST_fsm_state5 : STD_LOGIC_VECTOR (6 downto 0) := "0010000";
+    constant ap_ST_fsm_state6 : STD_LOGIC_VECTOR (6 downto 0) := "0100000";
+    constant ap_ST_fsm_state7 : STD_LOGIC_VECTOR (6 downto 0) := "1000000";
     constant ap_const_lv1_0 : STD_LOGIC_VECTOR (0 downto 0) := "0";
     constant ap_const_lv1_1 : STD_LOGIC_VECTOR (0 downto 0) := "1";
     constant ap_const_lv2_0 : STD_LOGIC_VECTOR (1 downto 0) := "00";
     constant ap_const_lv2_2 : STD_LOGIC_VECTOR (1 downto 0) := "10";
     constant ap_const_lv2_3 : STD_LOGIC_VECTOR (1 downto 0) := "11";
     constant ap_const_lv2_1 : STD_LOGIC_VECTOR (1 downto 0) := "01";
-    constant ap_const_lv32_1 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000001";
-    constant ap_const_lv32_4 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000100";
     constant ap_const_lv32_2 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000010";
     constant ap_const_lv32_5 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000101";
-    constant C_S_AXI_DATA_WIDTH : INTEGER range 63 downto 0 := 20;
+    constant ap_const_lv32_3 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000011";
+    constant ap_const_lv32_6 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000110";
     constant ap_const_lv8_FF : STD_LOGIC_VECTOR (7 downto 0) := "11111111";
     constant ap_const_lv64_45 : STD_LOGIC_VECTOR (63 downto 0) := "0000000000000000000000000000000000000000000000000000000001000101";
-    constant ap_const_lv32_3 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000011";
+    constant ap_const_lv32_4 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000100";
     constant ap_const_boolean_1 : BOOLEAN := true;
 
     signal ap_rst_n_inv : STD_LOGIC;
-    signal ap_start : STD_LOGIC;
-    signal ap_done : STD_LOGIC;
-    signal ap_idle : STD_LOGIC;
-    signal ap_CS_fsm : STD_LOGIC_VECTOR (5 downto 0) := "000001";
-    attribute fsm_encoding : string;
-    attribute fsm_encoding of ap_CS_fsm : signal is "none";
-    signal ap_CS_fsm_state1 : STD_LOGIC;
-    attribute fsm_encoding of ap_CS_fsm_state1 : signal is "none";
-    signal ap_ready : STD_LOGIC;
     signal packetIn_V_data_V_0_data_out : STD_LOGIC_VECTOR (63 downto 0);
     signal packetIn_V_data_V_0_vld_in : STD_LOGIC;
     signal packetIn_V_data_V_0_vld_out : STD_LOGIC;
@@ -149,98 +118,35 @@ architecture behav of testpr is
     signal packetOut_V_keep_V_1_data_out : STD_LOGIC_VECTOR (7 downto 0);
     signal packetOut_V_keep_V_1_vld_in : STD_LOGIC;
     signal packetOut_V_keep_V_1_vld_out : STD_LOGIC;
-    signal packetOut_V_keep_V_1_ack_in : STD_LOGIC;
     signal packetOut_V_keep_V_1_ack_out : STD_LOGIC;
     signal packetOut_V_keep_V_1_sel_rd : STD_LOGIC := '0';
     signal packetOut_V_keep_V_1_sel : STD_LOGIC;
     signal packetOut_V_keep_V_1_state : STD_LOGIC_VECTOR (1 downto 0) := "00";
     signal packetIn_TDATA_blk_n : STD_LOGIC;
-    signal ap_CS_fsm_state2 : STD_LOGIC;
-    attribute fsm_encoding of ap_CS_fsm_state2 : signal is "none";
-    signal ap_CS_fsm_state5 : STD_LOGIC;
-    attribute fsm_encoding of ap_CS_fsm_state5 : signal is "none";
-    signal packetOut_TDATA_blk_n : STD_LOGIC;
+    signal ap_CS_fsm : STD_LOGIC_VECTOR (6 downto 0) := "0000001";
+    attribute fsm_encoding : string;
+    attribute fsm_encoding of ap_CS_fsm : signal is "none";
     signal ap_CS_fsm_state3 : STD_LOGIC;
     attribute fsm_encoding of ap_CS_fsm_state3 : signal is "none";
     signal ap_CS_fsm_state6 : STD_LOGIC;
     attribute fsm_encoding of ap_CS_fsm_state6 : signal is "none";
-    signal tmp_last_V_reg_100 : STD_LOGIC_VECTOR (0 downto 0);
-    signal currPacketOut_data_V_fu_82_p2 : STD_LOGIC_VECTOR (63 downto 0);
-    signal tmp_last_V_3_reg_111 : STD_LOGIC_VECTOR (0 downto 0);
-    signal currPacketOut_data_V_1_fu_93_p2 : STD_LOGIC_VECTOR (63 downto 0);
-    signal ap_phi_mux_p_s_phi_fu_67_p4 : STD_LOGIC_VECTOR (0 downto 0);
-    signal p_s_reg_64 : STD_LOGIC_VECTOR (0 downto 0);
+    signal packetOut_TDATA_blk_n : STD_LOGIC;
     signal ap_CS_fsm_state4 : STD_LOGIC;
     attribute fsm_encoding of ap_CS_fsm_state4 : signal is "none";
-    signal ap_block_state4 : BOOLEAN;
-    signal ap_NS_fsm : STD_LOGIC_VECTOR (5 downto 0);
-
-    component testpr_AXILiteS_s_axi IS
-    generic (
-        C_S_AXI_ADDR_WIDTH : INTEGER;
-        C_S_AXI_DATA_WIDTH : INTEGER );
-    port (
-        AWVALID : IN STD_LOGIC;
-        AWREADY : OUT STD_LOGIC;
-        AWADDR : IN STD_LOGIC_VECTOR (C_S_AXI_ADDR_WIDTH-1 downto 0);
-        WVALID : IN STD_LOGIC;
-        WREADY : OUT STD_LOGIC;
-        WDATA : IN STD_LOGIC_VECTOR (C_S_AXI_DATA_WIDTH-1 downto 0);
-        WSTRB : IN STD_LOGIC_VECTOR (C_S_AXI_DATA_WIDTH/8-1 downto 0);
-        ARVALID : IN STD_LOGIC;
-        ARREADY : OUT STD_LOGIC;
-        ARADDR : IN STD_LOGIC_VECTOR (C_S_AXI_ADDR_WIDTH-1 downto 0);
-        RVALID : OUT STD_LOGIC;
-        RREADY : IN STD_LOGIC;
-        RDATA : OUT STD_LOGIC_VECTOR (C_S_AXI_DATA_WIDTH-1 downto 0);
-        RRESP : OUT STD_LOGIC_VECTOR (1 downto 0);
-        BVALID : OUT STD_LOGIC;
-        BREADY : IN STD_LOGIC;
-        BRESP : OUT STD_LOGIC_VECTOR (1 downto 0);
-        ACLK : IN STD_LOGIC;
-        ARESET : IN STD_LOGIC;
-        ACLK_EN : IN STD_LOGIC;
-        ap_start : OUT STD_LOGIC;
-        interrupt : OUT STD_LOGIC;
-        ap_ready : IN STD_LOGIC;
-        ap_done : IN STD_LOGIC;
-        ap_idle : IN STD_LOGIC );
-    end component;
-
+    signal ap_CS_fsm_state7 : STD_LOGIC;
+    attribute fsm_encoding of ap_CS_fsm_state7 : signal is "none";
+    signal tmp_last_V_reg_102 : STD_LOGIC_VECTOR (0 downto 0);
+    signal currPacketOut_data_V_fu_84_p2 : STD_LOGIC_VECTOR (63 downto 0);
+    signal tmp_last_V_3_reg_113 : STD_LOGIC_VECTOR (0 downto 0);
+    signal currPacketOut_data_V_1_fu_95_p2 : STD_LOGIC_VECTOR (63 downto 0);
+    signal ap_phi_mux_p_s_phi_fu_69_p4 : STD_LOGIC_VECTOR (0 downto 0);
+    signal p_s_reg_66 : STD_LOGIC_VECTOR (0 downto 0);
+    signal ap_NS_fsm : STD_LOGIC_VECTOR (6 downto 0);
+    signal ap_CS_fsm_state5 : STD_LOGIC;
+    attribute fsm_encoding of ap_CS_fsm_state5 : signal is "none";
 
 
 begin
-    testpr_AXILiteS_s_axi_U : component testpr_AXILiteS_s_axi
-    generic map (
-        C_S_AXI_ADDR_WIDTH => C_S_AXI_AXILITES_ADDR_WIDTH,
-        C_S_AXI_DATA_WIDTH => C_S_AXI_AXILITES_DATA_WIDTH)
-    port map (
-        AWVALID => s_axi_AXILiteS_AWVALID,
-        AWREADY => s_axi_AXILiteS_AWREADY,
-        AWADDR => s_axi_AXILiteS_AWADDR,
-        WVALID => s_axi_AXILiteS_WVALID,
-        WREADY => s_axi_AXILiteS_WREADY,
-        WDATA => s_axi_AXILiteS_WDATA,
-        WSTRB => s_axi_AXILiteS_WSTRB,
-        ARVALID => s_axi_AXILiteS_ARVALID,
-        ARREADY => s_axi_AXILiteS_ARREADY,
-        ARADDR => s_axi_AXILiteS_ARADDR,
-        RVALID => s_axi_AXILiteS_RVALID,
-        RREADY => s_axi_AXILiteS_RREADY,
-        RDATA => s_axi_AXILiteS_RDATA,
-        RRESP => s_axi_AXILiteS_RRESP,
-        BVALID => s_axi_AXILiteS_BVALID,
-        BREADY => s_axi_AXILiteS_BREADY,
-        BRESP => s_axi_AXILiteS_BRESP,
-        ACLK => ap_clk,
-        ARESET => ap_rst_n_inv,
-        ACLK_EN => ap_const_logic_1,
-        ap_start => ap_start,
-        interrupt => interrupt,
-        ap_ready => ap_ready,
-        ap_done => ap_done,
-        ap_idle => ap_idle);
-
 
 
 
@@ -345,7 +251,7 @@ begin
             if (ap_rst_n_inv = '1') then
                 packetIn_V_last_V_0_sel_wr <= ap_const_logic_0;
             else
-                if (((packetIn_V_last_V_0_vld_in = ap_const_logic_1) and (packetIn_V_last_V_0_ack_in = ap_const_logic_1))) then 
+                if (((packetIn_V_last_V_0_ack_in = ap_const_logic_1) and (packetIn_V_last_V_0_vld_in = ap_const_logic_1))) then 
                                         packetIn_V_last_V_0_sel_wr <= not(packetIn_V_last_V_0_sel_wr);
                 end if; 
             end if;
@@ -503,14 +409,14 @@ begin
     end process;
 
 
-    p_s_reg_64_assign_proc : process (ap_clk)
+    p_s_reg_66_assign_proc : process (ap_clk)
     begin
         if (ap_clk'event and ap_clk = '1') then
             if ((packetOut_V_data_V_1_ack_in = ap_const_logic_1)) then
-                if ((ap_const_logic_1 = ap_CS_fsm_state6)) then 
-                    p_s_reg_64 <= tmp_last_V_3_reg_111;
-                elsif ((ap_const_logic_1 = ap_CS_fsm_state3)) then 
-                    p_s_reg_64 <= tmp_last_V_reg_100;
+                if ((ap_const_logic_1 = ap_CS_fsm_state7)) then 
+                    p_s_reg_66 <= tmp_last_V_3_reg_113;
+                elsif ((ap_const_logic_1 = ap_CS_fsm_state4)) then 
+                    p_s_reg_66 <= tmp_last_V_reg_102;
                 end if;
             end if; 
         end if;
@@ -582,120 +488,79 @@ begin
     process (ap_clk)
     begin
         if (ap_clk'event and ap_clk = '1') then
-            if ((not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state5))) then
-                tmp_last_V_3_reg_111 <= packetIn_V_last_V_0_data_out;
+            if ((not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state6))) then
+                tmp_last_V_3_reg_113 <= packetIn_V_last_V_0_data_out;
             end if;
         end if;
     end process;
     process (ap_clk)
     begin
         if (ap_clk'event and ap_clk = '1') then
-            if ((not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state2))) then
-                tmp_last_V_reg_100 <= packetIn_V_last_V_0_data_out;
+            if ((not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state3))) then
+                tmp_last_V_reg_102 <= packetIn_V_last_V_0_data_out;
             end if;
         end if;
     end process;
 
-    ap_NS_fsm_assign_proc : process (ap_start, ap_CS_fsm, ap_CS_fsm_state1, packetIn_V_data_V_0_vld_out, packetOut_V_data_V_1_ack_in, packetOut_V_last_V_1_ack_in, packetOut_V_keep_V_1_ack_in, ap_CS_fsm_state2, ap_CS_fsm_state5, ap_CS_fsm_state3, ap_CS_fsm_state6, ap_phi_mux_p_s_phi_fu_67_p4, ap_CS_fsm_state4)
+    ap_NS_fsm_assign_proc : process (packetIn_V_data_V_0_vld_out, packetOut_V_data_V_1_ack_in, ap_CS_fsm, ap_CS_fsm_state3, ap_CS_fsm_state6, ap_CS_fsm_state4, ap_CS_fsm_state7, ap_phi_mux_p_s_phi_fu_69_p4, ap_CS_fsm_state5)
     begin
         case ap_CS_fsm is
             when ap_ST_fsm_state1 => 
-                if (((ap_const_logic_1 = ap_CS_fsm_state1) and (ap_start = ap_const_logic_1))) then
-                    ap_NS_fsm <= ap_ST_fsm_state2;
-                else
-                    ap_NS_fsm <= ap_ST_fsm_state1;
-                end if;
+                ap_NS_fsm <= ap_ST_fsm_state2;
             when ap_ST_fsm_state2 => 
-                if ((not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state2))) then
-                    ap_NS_fsm <= ap_ST_fsm_state3;
-                else
-                    ap_NS_fsm <= ap_ST_fsm_state2;
-                end if;
+                ap_NS_fsm <= ap_ST_fsm_state3;
             when ap_ST_fsm_state3 => 
-                if (((packetOut_V_data_V_1_ack_in = ap_const_logic_1) and (ap_const_logic_1 = ap_CS_fsm_state3))) then
+                if ((not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state3))) then
                     ap_NS_fsm <= ap_ST_fsm_state4;
                 else
                     ap_NS_fsm <= ap_ST_fsm_state3;
                 end if;
             when ap_ST_fsm_state4 => 
-                if ((not(((packetOut_V_keep_V_1_ack_in = ap_const_logic_0) or (packetOut_V_last_V_1_ack_in = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_phi_mux_p_s_phi_fu_67_p4 = ap_const_lv1_1) and (ap_const_logic_1 = ap_CS_fsm_state4))) then
-                    ap_NS_fsm <= ap_ST_fsm_state1;
-                elsif ((not(((packetOut_V_keep_V_1_ack_in = ap_const_logic_0) or (packetOut_V_last_V_1_ack_in = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_phi_mux_p_s_phi_fu_67_p4 = ap_const_lv1_0) and (ap_const_logic_1 = ap_CS_fsm_state4))) then
+                if (((packetOut_V_data_V_1_ack_in = ap_const_logic_1) and (ap_const_logic_1 = ap_CS_fsm_state4))) then
                     ap_NS_fsm <= ap_ST_fsm_state5;
                 else
                     ap_NS_fsm <= ap_ST_fsm_state4;
                 end if;
             when ap_ST_fsm_state5 => 
-                if ((not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state5))) then
-                    ap_NS_fsm <= ap_ST_fsm_state6;
+                if (((ap_phi_mux_p_s_phi_fu_69_p4 = ap_const_lv1_1) and (ap_const_logic_1 = ap_CS_fsm_state5))) then
+                    ap_NS_fsm <= ap_ST_fsm_state2;
                 else
-                    ap_NS_fsm <= ap_ST_fsm_state5;
+                    ap_NS_fsm <= ap_ST_fsm_state6;
                 end if;
             when ap_ST_fsm_state6 => 
-                if (((packetOut_V_data_V_1_ack_in = ap_const_logic_1) and (ap_const_logic_1 = ap_CS_fsm_state6))) then
-                    ap_NS_fsm <= ap_ST_fsm_state4;
+                if ((not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state6))) then
+                    ap_NS_fsm <= ap_ST_fsm_state7;
                 else
                     ap_NS_fsm <= ap_ST_fsm_state6;
                 end if;
+            when ap_ST_fsm_state7 => 
+                if (((packetOut_V_data_V_1_ack_in = ap_const_logic_1) and (ap_const_logic_1 = ap_CS_fsm_state7))) then
+                    ap_NS_fsm <= ap_ST_fsm_state5;
+                else
+                    ap_NS_fsm <= ap_ST_fsm_state7;
+                end if;
             when others =>  
-                ap_NS_fsm <= "XXXXXX";
+                ap_NS_fsm <= "XXXXXXX";
         end case;
     end process;
-    ap_CS_fsm_state1 <= ap_CS_fsm(0);
-    ap_CS_fsm_state2 <= ap_CS_fsm(1);
     ap_CS_fsm_state3 <= ap_CS_fsm(2);
     ap_CS_fsm_state4 <= ap_CS_fsm(3);
     ap_CS_fsm_state5 <= ap_CS_fsm(4);
     ap_CS_fsm_state6 <= ap_CS_fsm(5);
-
-    ap_block_state4_assign_proc : process(packetOut_V_data_V_1_ack_in, packetOut_V_last_V_1_ack_in, packetOut_V_keep_V_1_ack_in)
-    begin
-                ap_block_state4 <= ((packetOut_V_keep_V_1_ack_in = ap_const_logic_0) or (packetOut_V_last_V_1_ack_in = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0));
-    end process;
-
-
-    ap_done_assign_proc : process(packetOut_V_data_V_1_ack_in, packetOut_V_last_V_1_ack_in, packetOut_V_keep_V_1_ack_in, ap_phi_mux_p_s_phi_fu_67_p4, ap_CS_fsm_state4)
-    begin
-        if ((not(((packetOut_V_keep_V_1_ack_in = ap_const_logic_0) or (packetOut_V_last_V_1_ack_in = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_phi_mux_p_s_phi_fu_67_p4 = ap_const_lv1_1) and (ap_const_logic_1 = ap_CS_fsm_state4))) then 
-            ap_done <= ap_const_logic_1;
-        else 
-            ap_done <= ap_const_logic_0;
-        end if; 
-    end process;
-
-
-    ap_idle_assign_proc : process(ap_start, ap_CS_fsm_state1)
-    begin
-        if (((ap_start = ap_const_logic_0) and (ap_const_logic_1 = ap_CS_fsm_state1))) then 
-            ap_idle <= ap_const_logic_1;
-        else 
-            ap_idle <= ap_const_logic_0;
-        end if; 
-    end process;
-
-    ap_phi_mux_p_s_phi_fu_67_p4 <= p_s_reg_64;
-
-    ap_ready_assign_proc : process(packetOut_V_data_V_1_ack_in, packetOut_V_last_V_1_ack_in, packetOut_V_keep_V_1_ack_in, ap_phi_mux_p_s_phi_fu_67_p4, ap_CS_fsm_state4)
-    begin
-        if ((not(((packetOut_V_keep_V_1_ack_in = ap_const_logic_0) or (packetOut_V_last_V_1_ack_in = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_phi_mux_p_s_phi_fu_67_p4 = ap_const_lv1_1) and (ap_const_logic_1 = ap_CS_fsm_state4))) then 
-            ap_ready <= ap_const_logic_1;
-        else 
-            ap_ready <= ap_const_logic_0;
-        end if; 
-    end process;
-
+    ap_CS_fsm_state7 <= ap_CS_fsm(6);
+    ap_phi_mux_p_s_phi_fu_69_p4 <= p_s_reg_66;
 
     ap_rst_n_inv_assign_proc : process(ap_rst_n)
     begin
                 ap_rst_n_inv <= not(ap_rst_n);
     end process;
 
-    currPacketOut_data_V_1_fu_93_p2 <= std_logic_vector(unsigned(packetIn_V_data_V_0_data_out) + unsigned(ap_const_lv64_45));
-    currPacketOut_data_V_fu_82_p2 <= std_logic_vector(unsigned(packetIn_V_data_V_0_data_out) + unsigned(ap_const_lv64_45));
+    currPacketOut_data_V_1_fu_95_p2 <= std_logic_vector(unsigned(packetIn_V_data_V_0_data_out) + unsigned(ap_const_lv64_45));
+    currPacketOut_data_V_fu_84_p2 <= std_logic_vector(unsigned(packetIn_V_data_V_0_data_out) + unsigned(ap_const_lv64_45));
 
-    packetIn_TDATA_blk_n_assign_proc : process(packetIn_V_data_V_0_state, ap_CS_fsm_state2, ap_CS_fsm_state5)
+    packetIn_TDATA_blk_n_assign_proc : process(packetIn_V_data_V_0_state, ap_CS_fsm_state3, ap_CS_fsm_state6)
     begin
-        if (((ap_const_logic_1 = ap_CS_fsm_state5) or (ap_const_logic_1 = ap_CS_fsm_state2))) then 
+        if (((ap_const_logic_1 = ap_CS_fsm_state6) or (ap_const_logic_1 = ap_CS_fsm_state3))) then 
             packetIn_TDATA_blk_n <= packetIn_V_data_V_0_state(0);
         else 
             packetIn_TDATA_blk_n <= ap_const_logic_1;
@@ -705,9 +570,9 @@ begin
     packetIn_TREADY <= packetIn_V_keep_V_0_state(1);
     packetIn_V_data_V_0_ack_in <= packetIn_V_data_V_0_state(1);
 
-    packetIn_V_data_V_0_ack_out_assign_proc : process(packetIn_V_data_V_0_vld_out, packetOut_V_data_V_1_ack_in, ap_CS_fsm_state2, ap_CS_fsm_state5)
+    packetIn_V_data_V_0_ack_out_assign_proc : process(packetIn_V_data_V_0_vld_out, packetOut_V_data_V_1_ack_in, ap_CS_fsm_state3, ap_CS_fsm_state6)
     begin
-        if (((not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state5)) or (not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state2)))) then 
+        if (((not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state6)) or (not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state3)))) then 
             packetIn_V_data_V_0_ack_out <= ap_const_logic_1;
         else 
             packetIn_V_data_V_0_ack_out <= ap_const_logic_0;
@@ -731,9 +596,9 @@ begin
     packetIn_V_data_V_0_vld_in <= packetIn_TVALID;
     packetIn_V_data_V_0_vld_out <= packetIn_V_data_V_0_state(0);
 
-    packetIn_V_keep_V_0_ack_out_assign_proc : process(packetIn_V_data_V_0_vld_out, packetOut_V_data_V_1_ack_in, ap_CS_fsm_state2, ap_CS_fsm_state5)
+    packetIn_V_keep_V_0_ack_out_assign_proc : process(packetIn_V_data_V_0_vld_out, packetOut_V_data_V_1_ack_in, ap_CS_fsm_state3, ap_CS_fsm_state6)
     begin
-        if (((not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state5)) or (not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state2)))) then 
+        if (((not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state6)) or (not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state3)))) then 
             packetIn_V_keep_V_0_ack_out <= ap_const_logic_1;
         else 
             packetIn_V_keep_V_0_ack_out <= ap_const_logic_0;
@@ -743,9 +608,9 @@ begin
     packetIn_V_keep_V_0_vld_in <= packetIn_TVALID;
     packetIn_V_last_V_0_ack_in <= packetIn_V_last_V_0_state(1);
 
-    packetIn_V_last_V_0_ack_out_assign_proc : process(packetIn_V_data_V_0_vld_out, packetOut_V_data_V_1_ack_in, ap_CS_fsm_state2, ap_CS_fsm_state5)
+    packetIn_V_last_V_0_ack_out_assign_proc : process(packetIn_V_data_V_0_vld_out, packetOut_V_data_V_1_ack_in, ap_CS_fsm_state3, ap_CS_fsm_state6)
     begin
-        if (((not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state5)) or (not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state2)))) then 
+        if (((not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state6)) or (not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state3)))) then 
             packetIn_V_last_V_0_ack_out <= ap_const_logic_1;
         else 
             packetIn_V_last_V_0_ack_out <= ap_const_logic_0;
@@ -770,9 +635,9 @@ begin
     packetIn_V_last_V_0_vld_out <= packetIn_V_last_V_0_state(0);
     packetOut_TDATA <= packetOut_V_data_V_1_data_out;
 
-    packetOut_TDATA_blk_n_assign_proc : process(packetOut_V_data_V_1_state, ap_CS_fsm_state2, ap_CS_fsm_state5, ap_CS_fsm_state3, ap_CS_fsm_state6)
+    packetOut_TDATA_blk_n_assign_proc : process(packetOut_V_data_V_1_state, ap_CS_fsm_state3, ap_CS_fsm_state6, ap_CS_fsm_state4, ap_CS_fsm_state7)
     begin
-        if (((ap_const_logic_1 = ap_CS_fsm_state6) or (ap_const_logic_1 = ap_CS_fsm_state3) or (ap_const_logic_1 = ap_CS_fsm_state5) or (ap_const_logic_1 = ap_CS_fsm_state2))) then 
+        if (((ap_const_logic_1 = ap_CS_fsm_state7) or (ap_const_logic_1 = ap_CS_fsm_state4) or (ap_const_logic_1 = ap_CS_fsm_state6) or (ap_const_logic_1 = ap_CS_fsm_state3))) then 
             packetOut_TDATA_blk_n <= packetOut_V_data_V_1_state(1);
         else 
             packetOut_TDATA_blk_n <= ap_const_logic_1;
@@ -785,13 +650,13 @@ begin
     packetOut_V_data_V_1_ack_in <= packetOut_V_data_V_1_state(1);
     packetOut_V_data_V_1_ack_out <= packetOut_TREADY;
 
-    packetOut_V_data_V_1_data_in_assign_proc : process(packetIn_V_data_V_0_vld_out, ap_CS_fsm_state2, ap_CS_fsm_state5, currPacketOut_data_V_fu_82_p2, currPacketOut_data_V_1_fu_93_p2)
+    packetOut_V_data_V_1_data_in_assign_proc : process(packetIn_V_data_V_0_vld_out, ap_CS_fsm_state3, ap_CS_fsm_state6, currPacketOut_data_V_fu_84_p2, currPacketOut_data_V_1_fu_95_p2)
     begin
         if ((packetIn_V_data_V_0_vld_out = ap_const_logic_1)) then
-            if ((ap_const_logic_1 = ap_CS_fsm_state5)) then 
-                packetOut_V_data_V_1_data_in <= currPacketOut_data_V_1_fu_93_p2;
-            elsif ((ap_const_logic_1 = ap_CS_fsm_state2)) then 
-                packetOut_V_data_V_1_data_in <= currPacketOut_data_V_fu_82_p2;
+            if ((ap_const_logic_1 = ap_CS_fsm_state6)) then 
+                packetOut_V_data_V_1_data_in <= currPacketOut_data_V_1_fu_95_p2;
+            elsif ((ap_const_logic_1 = ap_CS_fsm_state3)) then 
+                packetOut_V_data_V_1_data_in <= currPacketOut_data_V_fu_84_p2;
             else 
                 packetOut_V_data_V_1_data_in <= "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
             end if;
@@ -815,9 +680,9 @@ begin
     packetOut_V_data_V_1_sel <= packetOut_V_data_V_1_sel_rd;
     packetOut_V_data_V_1_state_cmp_full <= '0' when (packetOut_V_data_V_1_state = ap_const_lv2_1) else '1';
 
-    packetOut_V_data_V_1_vld_in_assign_proc : process(packetIn_V_data_V_0_vld_out, packetOut_V_data_V_1_ack_in, ap_CS_fsm_state2, ap_CS_fsm_state5)
+    packetOut_V_data_V_1_vld_in_assign_proc : process(packetIn_V_data_V_0_vld_out, packetOut_V_data_V_1_ack_in, ap_CS_fsm_state3, ap_CS_fsm_state6)
     begin
-        if (((not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state5)) or (not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state2)))) then 
+        if (((not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state6)) or (not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state3)))) then 
             packetOut_V_data_V_1_vld_in <= ap_const_logic_1;
         else 
             packetOut_V_data_V_1_vld_in <= ap_const_logic_0;
@@ -825,14 +690,13 @@ begin
     end process;
 
     packetOut_V_data_V_1_vld_out <= packetOut_V_data_V_1_state(0);
-    packetOut_V_keep_V_1_ack_in <= packetOut_V_keep_V_1_state(1);
     packetOut_V_keep_V_1_ack_out <= packetOut_TREADY;
     packetOut_V_keep_V_1_data_out <= ap_const_lv8_FF;
     packetOut_V_keep_V_1_sel <= packetOut_V_keep_V_1_sel_rd;
 
-    packetOut_V_keep_V_1_vld_in_assign_proc : process(packetIn_V_data_V_0_vld_out, packetOut_V_data_V_1_ack_in, ap_CS_fsm_state2, ap_CS_fsm_state5)
+    packetOut_V_keep_V_1_vld_in_assign_proc : process(packetIn_V_data_V_0_vld_out, packetOut_V_data_V_1_ack_in, ap_CS_fsm_state3, ap_CS_fsm_state6)
     begin
-        if (((not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state5)) or (not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state2)))) then 
+        if (((not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state6)) or (not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state3)))) then 
             packetOut_V_keep_V_1_vld_in <= ap_const_logic_1;
         else 
             packetOut_V_keep_V_1_vld_in <= ap_const_logic_0;
@@ -857,9 +721,9 @@ begin
     packetOut_V_last_V_1_sel <= packetOut_V_last_V_1_sel_rd;
     packetOut_V_last_V_1_state_cmp_full <= '0' when (packetOut_V_last_V_1_state = ap_const_lv2_1) else '1';
 
-    packetOut_V_last_V_1_vld_in_assign_proc : process(packetIn_V_data_V_0_vld_out, packetOut_V_data_V_1_ack_in, ap_CS_fsm_state2, ap_CS_fsm_state5)
+    packetOut_V_last_V_1_vld_in_assign_proc : process(packetIn_V_data_V_0_vld_out, packetOut_V_data_V_1_ack_in, ap_CS_fsm_state3, ap_CS_fsm_state6)
     begin
-        if (((not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state5)) or (not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state2)))) then 
+        if (((not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state6)) or (not(((packetIn_V_data_V_0_vld_out = ap_const_logic_0) or (packetOut_V_data_V_1_ack_in = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state3)))) then 
             packetOut_V_last_V_1_vld_in <= ap_const_logic_1;
         else 
             packetOut_V_last_V_1_vld_in <= ap_const_logic_0;
